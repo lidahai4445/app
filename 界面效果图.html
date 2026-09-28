@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>纸间 · 平板界面效果图</title>
+<style>
+:root{
+  --paper:#F5F3ED; --surface:#FFFFFF; --surface2:#FAF9F5; --ink:#1D2926; --ink2:#4A5752; --muted:#86928D;
+  --line:#E5E7E0; --line2:#EEF0EA; --accent:#2F6B52; --accent2:#3F8466; --accentSoft:#E7F0EA; --accentSoft2:#F1F6F2;
+  --ai:#B8733A; --aiSoft:#FBF1E6; --hl:rgba(243,205,84,.45);
+  --r1:8px; --r2:12px; --r3:18px; --r4:26px;
+  --sh1:0 1px 2px rgba(22,34,29,.05),0 1px 1px rgba(22,34,29,.03);
+  --sh2:0 2px 6px rgba(22,34,29,.05),0 10px 28px rgba(22,34,29,.08);
+  --sh3:0 6px 16px rgba(22,34,29,.08),0 24px 60px rgba(22,34,29,.14);
+  --font:"PingFang SC","HarmonyOS Sans SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:#DAD8D1;color:var(--ink);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:22px 12px 40px;-webkit-font-smoothing:antialiased}
+.switch{display:flex;gap:6px;background:rgba(255,255,255,.7);padding:5px;border-radius:999px;box-shadow:var(--sh1);margin-bottom:10px}
+.switch button{border:0;background:transparent;font:500 13px var(--font);color:var(--ink2);padding:8px 16px;border-radius:999px;cursor:pointer}
+.switch button.on{background:var(--ink);color:#fff}
+.caption{font-size:12px;color:#6d736f;margin-bottom:16px;text-align:center;max-width:760px;line-height:1.6}
+.stage{width:100%;display:flex;justify-content:center}
+.device{width:1280px;height:800px;flex:none;background:#111;border-radius:34px;padding:14px;box-shadow:0 30px 80px rgba(0,0,0,.25);transform-origin:top center}
+.screen{width:100%;height:100%;border-radius:22px;overflow:hidden;background:var(--paper);position:relative;display:none}
+.screen.on{display:flex}
+svg.i{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+svg.s{width:16px;height:16px}
+.statusbar{position:absolute;top:0;left:0;right:0;height:26px;display:flex;justify-content:space-between;align-items:center;padding:0 22px;font-size:11.5px;font-weight:600;color:var(--ink);z-index:5;pointer-events:none}
+
+/* ---------- 资料库 ---------- */
+.rail{width:236px;background:var(--surface2);border-right:1px solid var(--line);padding:44px 16px 18px;display:flex;flex-direction:column;gap:4px}
+.brand{display:flex;align-items:center;gap:10px;padding:0 8px 22px}
+.logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(145deg,#3B7C60,#245641);display:grid;place-items:center;color:#fff;box-shadow:0 4px 10px rgba(47,107,82,.3)}
+.brand b{font-size:18px;letter-spacing:.5px}.brand small{display:block;font-size:10.5px;color:var(--muted);font-weight:400;margin-top:1px}
+.nav{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;font-size:13.5px;color:var(--ink2)}
+.nav.on{background:var(--accentSoft);color:var(--accent);font-weight:600}
+.nav .n{margin-left:auto;font-size:11.5px;color:var(--muted);font-weight:500}
+.navlabel{font-size:11px;color:var(--muted);padding:18px 12px 6px;letter-spacing:.6px}
+.tag{width:8px;height:8px;border-radius:3px}
+.railfoot{margin-top:auto;border-top:1px solid var(--line);padding-top:12px}
+.lib{flex:1;overflow:hidden;padding:44px 40px 0;display:flex;flex-direction:column}
+.libhead{display:flex;align-items:center;gap:14px}
+.libhead h1{font-size:25px;font-weight:650;letter-spacing:.3px}
+.libhead p{font-size:13px;color:var(--muted);margin-top:4px}
+.search{margin-left:auto;display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:0 14px;height:40px;width:260px;color:var(--muted);font-size:13px}
+.btn{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 18px;border-radius:12px;font:600 13.5px var(--font);border:0;cursor:pointer}
+.btn.primary{background:var(--accent);color:#fff;box-shadow:0 4px 12px rgba(47,107,82,.28)}
+.btn.ghost{background:var(--surface);color:var(--ink);border:1px solid var(--line)}
+.continue{margin-top:26px;background:var(--surface);border-radius:var(--r3);box-shadow:var(--sh2);display:flex;gap:26px;padding:22px 26px;align-items:center}
+.continue .cov{width:92px;height:122px}
+.continue h2{font-size:18px;font-weight:650;margin:6px 0 6px}
+.eyebrow{font-size:11px;color:var(--accent);font-weight:650;letter-spacing:1px}
+.meta{font-size:12.5px;color:var(--muted);display:flex;gap:14px;align-items:center}
+.progress{height:6px;border-radius:9px;background:var(--line2);overflow:hidden;margin-top:14px;width:380px}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));border-radius:9px}
+.stats{margin-left:auto;display:flex;gap:30px;padding-right:10px}
+.stat b{display:block;font-size:22px;font-weight:650}.stat span{font-size:11.5px;color:var(--muted)}
+.sechead{display:flex;align-items:center;margin:30px 0 14px;gap:8px}
+.sechead h3{font-size:15px;font-weight:650;margin-right:10px}
+.chip{font-size:12px;padding:6px 12px;border-radius:999px;background:transparent;color:var(--ink2);border:1px solid var(--line)}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.sort{margin-left:auto;font-size:12px;color:var(--muted);display:flex;align-items:center;gap:4px}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:26px 24px}
+.card .cov{aspect-ratio:3/4;width:100%}
+.cov{position:relative;border-radius:6px 10px 10px 6px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.06),3px 3px 0 -1px #fff,3px 3px 0 0 #E4E4DE,6px 6px 0 -1px #fff,6px 6px 0 0 #E4E4DE,0 14px 24px rgba(22,34,29,.1);overflow:hidden;padding:12% 12%}
+.cov .l{height:4px;border-radius:2px;background:#E9EAE5;margin-bottom:7%}
+.cov .l.t{height:7px;background:#CBD2CD;width:70%;margin-bottom:12%}
+.cov .band{position:absolute;left:0;top:0;bottom:0;width:5px}
+.cov .badge{position:absolute;right:8px;bottom:8px;font-size:10px;font-weight:600;padding:3px 7px;border-radius:6px;background:var(--accentSoft);color:var(--accent)}
+.card h4{font-size:13px;font-weight:600;margin-top:13px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card .meta{font-size:11.5px;margin-top:4px;gap:8px}
+.mini{height:3px;border-radius:3px;background:var(--line2);margin-top:9px;overflow:hidden}.mini i{display:block;height:100%;background:var(--accent)}
+
+/* ---------- 阅读器 ---------- */
+.reader{flex:1;display:flex;flex-direction:column;position:relative}
+.topbar{height:64px;padding:22px 18px 0;display:flex;align-items:center;gap:10px;background:rgba(250,249,245,.86);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);position:relative;z-index:3}
+.icon-btn{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;color:var(--ink2)}
+.icon-btn.on{background:var(--accentSoft);color:var(--accent)}
+.title b{font-size:14px;font-weight:600;display:block}.title span{font-size:11.5px;color:var(--muted)}
+.seg{position:absolute;left:50%;transform:translateX(-50%);bottom:9px;display:flex;background:#ECEBE5;border-radius:12px;padding:3px}
+.seg div{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--ink2);padding:7px 18px;border-radius:9px}
+.seg div.on{background:#fff;color:var(--ink);box-shadow:var(--sh1)}
+.seg div.on.ai{color:var(--ai)}
+.tright{margin-left:auto;display:flex;align-items:center;gap:4px}
+.timer{display:flex;align-items:center;gap:8px;height:34px;padding:0 13px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-size:12.5px;color:var(--ink2);margin-right:6px}
+.pulse{width:7px;height:7px;border-radius:50%;background:#D26B4E;box-shadow:0 0 0 4px rgba(210,107,78,.15)}
+.body{flex:1;display:flex;min-height:0;position:relative}
+.thumbs{width:92px;border-right:1px solid var(--line);background:var(--surface2);padding:16px 14px;display:flex;flex-direction:column;gap:14px;align-items:center}
+.th{width:58px;aspect-ratio:3/4;background:#fff;border-radius:4px;box-shadow:var(--sh1);padding:7px 6px;position:relative}
+.th .l{height:2px;background:#E7E8E3;margin-bottom:4px;border-radius:2px}
+.th.on{outline:2px solid var(--accent);outline-offset:3px}
+.th span{position:absolute;bottom:-17px;left:0;right:0;text-align:center;font-size:10px;color:var(--muted)}
+.th .dot{position:absolute;top:-4px;right:-4px;width:9px;height:9px;border-radius:50%;background:var(--accent);border:2px solid var(--surface2)}
+.canvas{flex:1;overflow:hidden;display:flex;justify-content:center;padding-top:74px;position:relative;background:radial-gradient(ellipse at top,#F1EFE8,#EAE8E1)}
+.page{width:560px;height:760px;background:#FFFEFB;box-shadow:var(--sh3);border-radius:3px;padding:44px 50px;font-family:Georgia,"Times New Roman",serif;color:#2A2A28;position:relative;flex:none}
+.page h5{font-family:var(--font);font-size:11px;letter-spacing:1.5px;color:#8A8A84;font-weight:600;margin-bottom:14px}
+.page h6{font-size:14.5px;font-weight:700;margin:4px 0 10px;font-family:Georgia,serif}
+.page p{font-size:12.6px;line-height:1.78;text-align:justify;margin-bottom:10px}
+.page .q{font-size:12.4px;line-height:1.7;margin:10px 0 4px}
+.page .opt{font-size:12px;line-height:1.75;padding-left:16px;color:#3a3a37}
+mark{background:var(--hl);color:inherit;padding:0 1px;border-radius:2px}
+.sel{background:rgba(63,132,102,.18);border-bottom:2px solid var(--accent2);border-radius:2px}
+.ink{position:absolute;inset:0;pointer-events:none}
+.toolpill{position:absolute;top:14px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:2px;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-radius:16px;padding:5px;box-shadow:var(--sh2);border:1px solid rgba(0,0,0,.04);z-index:2}
+.tool{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;color:var(--ink2);position:relative}
+.tool.on{background:var(--ink);color:#fff}
+.tool.on.aion{background:var(--ai)}
+.sep{width:1px;height:24px;background:var(--line);margin:0 7px}
+.sw{width:22px;height:22px;border-radius:50%;margin:0 4px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.sw.on{box-shadow:0 0 0 2px #fff,0 0 0 4px var(--ink)}
+.wd{width:28px;height:28px;display:grid;place-items:center;border-radius:9px}
+.wd i{display:block;border-radius:9px;background:var(--ink2)}
+.wd.on{background:#F0EFEA}
+.tlabel{font:600 12px var(--font);color:var(--ink2);padding:0 10px 0 4px}
+.pager{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.92);border-radius:999px;padding:5px 7px;box-shadow:var(--sh2);font-size:12.5px;color:var(--ink2);font-weight:500}
+.pager .icon-btn{width:30px;height:30px;border-radius:999px}
+.hint{position:absolute;bottom:22px;left:24px;font-size:11.5px;color:var(--muted);display:flex;gap:6px;align-items:center}
+.kbd{border:1px solid var(--line);background:#fff;border-radius:6px;padding:2px 6px;font-size:10.5px}
+
+/* 辅助 */
+.pop{position:absolute;width:300px;background:#fff;border-radius:16px;box-shadow:var(--sh3);padding:16px 18px;font-family:var(--font);z-index:3;border:1px solid rgba(0,0,0,.04)}
+.pop:before{content:"";position:absolute;top:-7px;left:40px;width:14px;height:14px;background:#fff;transform:rotate(45deg);border-left:1px solid rgba(0,0,0,.04);border-top:1px solid rgba(0,0,0,.04)}
+.pop .w{font-size:18px;font-weight:650;font-family:Georgia,serif}
+.pop .ph{font-size:12px;color:var(--muted);margin-left:8px}
+.pop .pos{display:inline-block;font-size:10.5px;font-weight:600;color:var(--accent);background:var(--accentSoft);border-radius:5px;padding:2px 6px;margin-right:6px}
+.pop .ctx{margin-top:10px;padding:10px 12px;background:var(--accentSoft2);border-radius:10px;font-size:12.5px;line-height:1.6;color:var(--ink2)}
+.pop .ctx b{color:var(--accent);font-weight:600}
+.pop .acts{display:flex;gap:6px;margin-top:12px}
+.mbtn{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;padding:7px 11px;border-radius:9px;background:#F3F3EE;color:var(--ink2)}
+.cached{margin-left:auto;font-size:10.5px;color:var(--muted);display:flex;align-items:center;gap:4px}
+.lasso{position:absolute;border:2px dashed var(--ai);border-radius:18px;background:rgba(184,115,58,.05)}
+.aichip{position:absolute;display:flex;align-items:center;gap:7px;background:var(--ai);color:#fff;font:600 12.5px var(--font);padding:8px 14px;border-radius:999px;box-shadow:0 6px 16px rgba(184,115,58,.35)}
+.panel{width:372px;background:var(--surface);border-left:1px solid var(--line);display:flex;flex-direction:column}
+.ptabs{display:flex;gap:4px;padding:14px 16px 0;border-bottom:1px solid var(--line)}
+.ptab{font-size:13px;font-weight:600;color:var(--muted);padding:9px 12px 12px;border-bottom:2px solid transparent;display:flex;gap:6px;align-items:center}
+.ptab.on{color:var(--ink);border-color:var(--ink)}
+.ptab em{font-style:normal;font-size:10.5px;background:#F0F0EB;border-radius:6px;padding:1px 6px;color:var(--ink2)}
+.plist{flex:1;overflow:hidden;padding:14px 16px;display:flex;flex-direction:column;gap:12px;background:var(--surface2)}
+.acard{background:#fff;border-radius:14px;border:1px solid var(--line2);box-shadow:var(--sh1);padding:14px 16px}
+.acard .k{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:650;letter-spacing:.5px;color:var(--muted);margin-bottom:8px}
+.acard .k .d{width:6px;height:6px;border-radius:50%}
+.acard .src{font-family:Georgia,serif;font-size:13px;line-height:1.55;color:var(--ink);border-left:3px solid var(--accentSoft);padding-left:10px;margin-bottom:8px}
+.acard .zh{font-size:12.8px;line-height:1.7;color:var(--ink2)}
+.acard.ai{border-color:#F1E2D2;background:linear-gradient(180deg,#FFFCF8,#fff)}
+.step{display:flex;gap:10px;font-size:12.5px;line-height:1.65;color:var(--ink2);margin-top:8px}
+.step i{flex:none;width:19px;height:19px;border-radius:50%;background:var(--aiSoft);color:var(--ai);font:700 10.5px/19px var(--font);text-align:center;font-style:normal;margin-top:1px}
+.answer{margin-top:10px;display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:var(--ai);background:var(--aiSoft);padding:8px 12px;border-radius:10px}
+.sk{height:9px;border-radius:5px;background:linear-gradient(90deg,#F0EFEA 0%,#F8F7F3 50%,#F0EFEA 100%);margin-top:8px}
+.pfoot{padding:12px 16px;border-top:1px solid var(--line);display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--muted)}
+
+/* 计时结束 */
+.scrim{position:absolute;inset:0;background:rgba(29,41,38,.28);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;z-index:6}
+.sheet{width:420px;background:#fff;border-radius:24px;box-shadow:var(--sh3);padding:30px 32px 26px;text-align:center}
+.sheet .big{font-size:46px;font-weight:650;letter-spacing:1px;margin:10px 0 2px;font-variant-numeric:tabular-nums}
+.sheet .row{display:flex;justify-content:space-around;margin:22px 0;padding:16px 0;border-top:1px solid var(--line2);border-bottom:1px solid var(--line2)}
+.sheet .row b{display:block;font-size:17px}.sheet .row span{font-size:11.5px;color:var(--muted)}
+.btn{white-space:nowrap}
+.continue .cov{flex:none;padding:14px 12px}
+.circ{position:relative}
+.circ:after{content:"";position:absolute;left:-5px;top:-3px;right:-5px;bottom:-3px;border:1.7px solid #1F2B45;border-radius:50%;transform:rotate(-6deg)}
+.uline{text-decoration:underline;text-decoration-color:#C0473B;text-decoration-thickness:1.6px;text-underline-offset:3px}
+.note{position:absolute;right:-6px;font:13px 'Segoe Print','Bradley Hand','Comic Sans MS',cursive;color:#C0473B;transform:rotate(-5deg)}
+.qa{position:relative}
+.bar{position:absolute;left:-26px;width:1.6px;background:#1F2B45;border-radius:2px}
+.tlabel{white-space:nowrap}
+.thumbs{gap:26px!important}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></symbol>
+  <symbol id="i-hl" viewBox="0 0 24 24"><path d="m9 11-6 6v3h9l3-3"/><path d="m22 12-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4"/></symbol>
+  <symbol id="i-eraser" viewBox="0 0 24 24"><path d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21"/><path d="M22 21H7"/><path d="m5 11 9 9"/></symbol>
+  <symbol id="i-lasso" viewBox="0 0 24 24"><path d="M7 22a5 5 0 0 1-2-4"/><path d="M3.3 14A6.8 6.8 0 0 1 2 10c0-4.4 4.5-8 10-8s10 3.6 10 8-4.5 8-10 8a12 12 0 0 1-5-1"/><path d="M5 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></symbol>
+  <symbol id="i-text" viewBox="0 0 24 24"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></symbol>
+  <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></symbol>
+  <symbol id="i-redo" viewBox="0 0 24 24"><path d="m15 14 5-5-5-5"/><path d="M20 9H9.5a5.5 5.5 0 0 0 0 11H13"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+  <symbol id="i-fwd" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><path d="M12.2 2h-.4a2 2 0 0 0-2 2v.2a2 2 0 0 1-1 1.7l-.4.3a2 2 0 0 1-2 0l-.2-.1a2 2 0 0 0-2.7.7l-.2.4a2 2 0 0 0 .7 2.7l.2.1a2 2 0 0 1 1 1.7v.5a2 2 0 0 1-1 1.7l-.2.1a2 2 0 0 0-.7 2.7l.2.4a2 2 0 0 0 2.7.7l.2-.1a2 2 0 0 1 2 0l.4.3a2 2 0 0 1 1 1.7v.2a2 2 0 0 0 2 2h.4a2 2 0 0 0 2-2v-.2a2 2 0 0 1 1-1.7l.4-.3a2 2 0 0 1 2 0l.2.1a2 2 0 0 0 2.7-.7l.2-.4a2 2 0 0 0-.7-2.7l-.2-.1a2 2 0 0 1-1-1.7v-.5a2 2 0 0 1 1-1.7l.2-.1a2 2 0 0 0 .7-2.7l-.2-.4a2 2 0 0 0-2.7-.7l-.2.1a2 2 0 0 1-2 0l-.4-.3a2 2 0 0 1-1-1.7V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8-6.2-3.2L5.8 21 7 14.2 2 9.3l6.9-1z"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></symbol>
+  <symbol id="i-word" viewBox="0 0 24 24"><path d="M4 20 9 4h2l5 16"/><path d="M6 14h8"/><path d="M18 9v11"/></symbol>
+  <symbol id="i-line" viewBox="0 0 24 24"><path d="M4 18h16"/><path d="M6 13h9"/><path d="M6 8h12"/></symbol>
+  <symbol id="i-scan" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></symbol>
+  <symbol id="i-vol" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></symbol>
+  <symbol id="i-bm" viewBox="0 0 24 24"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+  <symbol id="i-db" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></symbol>
+  <symbol id="i-panel" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M15 3v18"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="M4 22v-7"/></symbol>
+</svg>
+
+<div class="switch" id="sw">
+  <button class="on" data-s="lib">① 资料库</button>
+  <button data-s="focus">② 做题模式</button>
+  <button data-s="assist">③ 辅助模式</button>
+  <button data-s="done">④ 结束计时</button>
+</div>
+<div class="caption" id="cap"></div>
+
+<div class="stage"><div class="device" id="dev">
+
+<!-- ① 资料库 -->
+<section class="screen on" id="lib">
+  <div class="statusbar"><span>14:32</span><span>Wi-Fi · 86%</span></div>
+  <aside class="rail">
+    <div class="brand"><div class="logo"><svg class="i s"><use href="#i-book"/></svg></div><div><b>纸间</b><small>让思考留在纸上</small></div></div>
+    <div class="nav on"><svg class="i s"><use href="#i-grid"/></svg>全部试卷<span class="n">12</span></div>
+    <div class="nav"><svg class="i s"><use href="#i-clock"/></svg>最近打开</div>
+    <div class="nav"><svg class="i s"><use href="#i-star"/></svg>收藏</div>
+    <div class="nav"><svg class="i s"><use href="#i-bm"/></svg>生词本<span class="n">248</span></div>
+    <div class="navlabel">科目</div>
+    <div class="nav"><span class="tag" style="background:#3F8466"></span>英语一<span class="n">6</span></div>
+    <div class="nav"><span class="tag" style="background:#5B7DB1"></span>数学一<span class="n">4</span></div>
+    <div class="nav"><span class="tag" style="background:#C08A4A"></span>政治<span class="n">2</span></div>
+    <div class="railfoot"><div class="nav"><svg class="i s"><use href="#i-gear"/></svg>设置</div></div>
+  </aside>
+  <main class="lib">
+    <div class="libhead">
+      <div><h1>下午好，继续加油</h1><p>本周已专注 6 小时 42 分 · 完成 3 套</p></div>
+      <div class="search"><svg class="i s"><use href="#i-search"/></svg>搜索试卷、生词</div>
+      <button class="btn primary"><svg class="i s"><use href="#i-plus"/></svg>导入 PDF</button>
+    </div>
+    <div class="continue">
+      <div class="cov"><span class="band" style="background:#3F8466"></span><div class="l t"></div><div class="l"></div><div class="l"></div><div class="l" style="width:60%"></div><div class="l"></div><div class="l"></div></div>
+      <div>
+        <div class="eyebrow">继续上次</div>
+        <h2>2024 考研英语一 · 真题</h2>
+        <div class="meta"><span>阅读 Text 2</span><span>·</span><span>第 3 / 12 页</span><span>·</span><span>2 小时前</span></div>
+        <div class="progress"><i style="width:26%"></i></div>
+      </div>
+      <div class="stats">
+        <div class="stat"><b>47:12</b><span>已用时</span></div>
+        <div class="stat"><b>18</b><span>查词</span></div>
+        <button class="btn primary" style="align-self:center">继续做题<svg class="i s"><use href="#i-fwd"/></svg></button>
+      </div>
+    </div>
+    <div class="sechead"><h3>全部试卷</h3><span class="chip on">全部</span><span class="chip">英语一</span><span class="chip">数学一</span><span class="chip">政治</span><span class="sort">最近打开 ▾</span></div>
+    <div class="grid" id="grid"></div>
+  </main>
+</section>
+
+<!-- ②③ 阅读器 -->
+<section class="screen" id="reader">
+  <div class="statusbar"><span>14:32</span><span>Wi-Fi · 86%</span></div>
+  <div class="reader">
+    <div class="topbar">
+      <div class="icon-btn"><svg class="i"><use href="#i-back"/></svg></div>
+      <div class="title"><b>2024 考研英语一 · 真题</b><span>阅读 Text 2 · 第 3 / 12 页</span></div>
+      <div class="seg"><div class="segF on"><svg class="i s"><use href="#i-pen"/></svg>做题</div><div class="segA"><svg class="i s"><use href="#i-spark"/></svg>辅助</div></div>
+      <div class="tright">
+        <div class="timer" id="timerpill"><span class="pulse"></span>计时中 · 已隐藏</div>
+        <div class="icon-btn"><svg class="i"><use href="#i-search"/></svg></div>
+        <div class="icon-btn" id="panelbtn"><svg class="i"><use href="#i-panel"/></svg></div>
+        <div class="icon-btn"><svg class="i"><use href="#i-more"/></svg></div>
+      </div>
+    </div>
+    <div class="body">
+      <div class="thumbs" id="thumbs"></div>
+      <div class="canvas">
+        <!-- 做题工具 -->
+        <div class="toolpill" id="pillF">
+          <div class="tool on"><svg class="i"><use href="#i-pen"/></svg></div>
+          <div class="tool"><svg class="i"><use href="#i-hl"/></svg></div>
+          <div class="tool"><svg class="i"><use href="#i-eraser"/></svg></div>
+          <div class="tool"><svg class="i"><use href="#i-lasso"/></svg></div>
+          <div class="tool"><svg class="i"><use href="#i-text"/></svg></div>
+          <div class="sep"></div>
+          <span class="sw on" style="background:#1F2B45"></span><span class="sw" style="background:#2F6B52"></span><span class="sw" style="background:#C0473B"></span><span class="sw" style="background:#3F74C9"></span>
+          <div class="sep"></div>
+          <div class="wd"><i style="width:4px;height:4px"></i></div><div class="wd on"><i style="width:7px;height:7px"></i></div><div class="wd"><i style="width:10px;height:10px"></i></div>
+          <div class="sep"></div>
+          <div class="tool"><svg class="i"><use href="#i-undo"/></svg></div>
+          <div class="tool" style="color:#C9CEC9"><svg class="i"><use href="#i-redo"/></svg></div>
+        </div>
+        <!-- 辅助工具 -->
+        <div class="toolpill" id="pillA" style="display:none">
+          <div class="tool on aion"><svg class="i"><use href="#i-word"/></svg></div><span class="tlabel">点词</span>
+          <div class="tool"><svg class="i"><use href="#i-line"/></svg></div><span class="tlabel">划句</span>
+          <div class="tool"><svg class="i"><use href="#i-lasso"/></svg></div><span class="tlabel">圈题解答</span>
+          <div class="sep"></div>
+          <span class="tlabel" style="color:var(--accent);display:flex;align-items:center;gap:5px"><svg class="i s"><use href="#i-check"/></svg>本页已识别 · 612 词</span>
+        </div>
+
+        <div class="page">
+          <h5>SECTION II · READING COMPREHENSION · PART A</h5>
+          <h6>Text 2</h6>
+          <p>It is a truth almost universally acknowledged that the modern workplace rewards visibility. Yet a growing body of research suggests that the most <span class="w1">conscientious</span> employees are often the least <mark>recognised</mark>, precisely because their contributions prevent problems rather than solve them.</p>
+          <p style="position:relative"><span class="bar" style="top:4px;height:70px"></span><span class="note" style="top:-14px">主旨!</span>Economists call this the <span class="w2 uline">paradox of prevention</span>: <span class="uline">when a crisis is averted, there is nothing to point to</span>. Managers, under pressure to justify budgets, tend to reward the dramatic rescue over the quiet maintenance that made the rescue unnecessary.</p>
+          <p>Some firms have begun to experiment with alternatives. Rather than annual reviews built around headline achievements, they ask teams to document <mark>near-misses</mark> and the routines that caught them in time.</p>
+          <div class="qwrap">
+          <div class="qa" id="q26"><div class="q">26. According to Paragraph 2, the “paradox of prevention” refers to the fact that</div>
+          <div class="opt">[A] crises are more frequent in well-managed firms.<br><span class="circ">[B]</span> successful prevention leaves little visible evidence.<br>[C] managers deliberately overlook routine work.<br>[D] budgets are rarely linked to actual performance.</div>
+<div class="aiL" style="display:none"><div class="lasso" style="left:-14px;top:-6px;right:-14px;bottom:-8px"></div><div class="aichip" style="right:-6px;bottom:-26px"><svg class="i s"><use href="#i-spark"/></svg>AI 解答此题</div></div></div>
+          <div class="q">27. The firms mentioned in Paragraph 3 are trying to</div>
+          <div class="opt">[A] reduce the frequency of annual reviews.<br><span class="circ">[B]</span> give credit to preventive efforts.<br>[C] replace managers with self-run teams.<br>[D] publicise their headline achievements.</div>
+          </div>
+                            </div>
+        <div class="pop" id="pop" style="display:none;left:calc(50% - 172px);top:218px">
+          <div><span class="w">conscientious</span><span class="ph">/ˌkɒnʃiˈenʃəs/</span><svg class="i s" style="float:right;color:var(--muted)"><use href="#i-vol"/></svg></div>
+          <div style="margin-top:8px;font-size:13px;color:var(--ink2)"><span class="pos">adj.</span>认真的；尽责的；本着良心的</div>
+          <div class="ctx"><b>语境义：</b>尽职尽责的（员工）——指踏实做好本职、预防问题的人，与后文 “least recognised” 形成对比。</div>
+          <div class="acts"><span class="mbtn"><svg class="i s"><use href="#i-bm"/></svg>加入生词本</span><span class="mbtn"><svg class="i s"><use href="#i-panel"/></svg>固定到侧栏</span><span class="cached"><svg class="i s"><use href="#i-db"/></svg>来自本地缓存</span></div>
+        </div>
+        <div class="pager"><div class="icon-btn"><svg class="i s"><use href="#i-back"/></svg></div>3 / 12<div class="icon-btn"><svg class="i s"><use href="#i-fwd"/></svg></div></div>
+        <div class="hint" id="hintF"><span class="kbd">笔</span>书写 · <span class="kbd">单指</span>滑动 · <span class="kbd">双指</span>缩放 · <span class="kbd">双指轻点</span>撤销</div>
+      </div>
+      <aside class="panel" id="panel" style="display:none">
+        <div class="ptabs"><div class="ptab on">本页<em>4</em></div><div class="ptab">生词<em>18</em></div><div class="ptab">解题<em>1</em></div></div>
+        <div class="plist">
+          <div class="acard ai">
+            <div class="k"><span class="d" style="background:var(--ai)"></span>AI 解题 · 第 26 题<span style="margin-left:auto;font-weight:500;letter-spacing:0">GLM-4.6V</span></div>
+            <div class="step"><i>1</i><span>定位第 2 段：“when a crisis is averted, there is nothing to point to”。</span></div>
+            <div class="step"><i>2</i><span>“paradox” 指预防成功 → 反而没有可见成果，与 [B] “leaves little visible evidence” 同义替换。</span></div>
+            <div class="step"><i>3</i><span>[C] “deliberately” 过度推断；[A][D] 原文未提及。</span></div>
+            <div class="answer"><svg class="i s"><use href="#i-check"/></svg>答案：B　·　你的选择：B ✓</div>
+          </div>
+          <div class="acard">
+            <div class="k"><span class="d" style="background:var(--accent)"></span>短语</div>
+            <div class="src">paradox of prevention</div>
+            <div class="zh">预防悖论：成功的预防因为“什么都没发生”而难以被看见和奖励。</div>
+          </div>
+          <div class="acard">
+            <div class="k"><span class="d" style="background:var(--accent)"></span>长句 · 正在分析</div>
+            <div class="src">Managers, under pressure to justify budgets, tend to reward the dramatic rescue…</div>
+            <div class="sk" style="width:92%"></div><div class="sk" style="width:74%"></div><div class="sk" style="width:55%"></div>
+          </div>
+        </div>
+        <div class="pfoot"><svg class="i s"><use href="#i-db"/></svg>本机缓存 · 相同内容不重复请求<span style="margin-left:auto">全部导出</span></div>
+      </aside>
+    </div>
+    <div class="scrim" id="scrim" style="display:none"><div class="sheet">
+      <div class="eyebrow">本次练习完成</div>
+      <div class="big">52:36</div>
+      <div style="font-size:12.5px;color:var(--muted)">阅读 Text 2 · 建议用时 40 分钟</div>
+      <div class="row"><div><b>5 / 5</b><span>题已作答</span></div><div><b>7</b><span>查词</span></div><div><b>1</b><span>AI 解题</span></div></div>
+      <div style="display:flex;gap:10px;justify-content:center"><button class="btn ghost">返回继续看</button><button class="btn primary">切换到辅助模式对答案</button></div>
+    </div></div>
+  </div>
+</section>
+
+</div></div>
+
+<script>
+const covers=[["2024 考研英语一 · 真题","#3F8466","英语一",26,"3/12"],["2023 考研英语一 · 真题","#3F8466","英语一",100,"已完成"],["2024 数学一 · 真题","#5B7DB1","数学一",40,"6/16"],["张宇 1000 题 · 高数","#5B7DB1","数学一",12,"23/210"],["肖秀荣 1000 题","#C08A4A","政治",8,"11/140"],["2022 考研英语一 · 真题","#3F8466","英语一",0,"未开始"],["2023 数学一 · 真题","#5B7DB1","数学一",100,"已完成"],["黄皮书 · 阅读精讲","#3F8466","英语一",55,"40/72"],["政治 · 腿姐冲刺背诵","#C08A4A","政治",0,"未开始"],["2021 考研英语一 · 真题","#3F8466","英语一",64,"8/12"]];
+const g=document.getElementById('grid');
+covers.slice(0,5).forEach(c=>{g.insertAdjacentHTML('beforeend',`<div class="card"><div class="cov"><span class="band" style="background:${c[1]}"></span><div class="l t"></div><div class="l"></div><div class="l"></div><div class="l" style="width:60%"></div><div class="l"></div><div class="l" style="width:80%"></div><div class="l"></div>${c[3]===100?'<span class="badge">已完成</span>':''}</div><h4>${c[0]}</h4><div class="meta"><span style="color:${c[1]};font-weight:600">${c[2]}</span><span>${c[4]}</span></div><div class="mini"><i style="width:${c[3]}%"></i></div></div>`);});
+const t=document.getElementById('thumbs');
+for(let i=1;i<=6;i++){let ls='';for(let k=0;k<9;k++)ls+=`<div class="l" style="width:${[100,90,100,70,100,85,100,60,95][k]}%"></div>`;t.insertAdjacentHTML('beforeend',`<div class="th ${i===3?'on':''}">${ls}${i<3?'<span class="dot"></span>':''}<span>${i}</span></div>`);}
+const caps={
+ lib:'资料库：左侧导航（科目、生词本），顶部“继续上次”大卡片一键回到做题，封面带科目色条与进度。简洁，但有层次、有信息。',
+ focus:'做题模式：界面退后，纸张居中。工具做成悬浮胶囊（笔/荧光/橡皮/套索/文字 + 颜色 + 粗细 + 撤销）；计时只显示“计时中·已隐藏”，不显示数字。',
+ assist:'辅助模式：点词 → 就地弹出释义+语境义（本地缓存命中会标注）；圈题 → “AI 解答此题”；右侧面板按 本页/生词/解题 归档，加载时有骨架屏。',
+ done:'结束计时：才第一次看到用时，并给出作答与查词统计，一键切到辅助模式对答案。'
+};
+function show(s){
+ document.querySelectorAll('#sw button').forEach(b=>b.classList.toggle('on',b.dataset.s===s));
+ document.getElementById('lib').classList.toggle('on',s==='lib');
+ document.getElementById('reader').classList.toggle('on',s!=='lib');
+ const a=s==='assist';
+ document.querySelector('.segF').classList.toggle('on',!a);
+ const sa=document.querySelector('.segA');sa.classList.toggle('on',a);sa.classList.toggle('ai',a);
+ document.getElementById('pillF').style.display=a?'none':'flex';
+ document.getElementById('pillA').style.display=a?'flex':'none';
+ document.getElementById('pop').style.display=a?'block':'none';
+ document.querySelector('.aiL').style.display=a?'block':'none';
+ document.getElementById('panel').style.display=a?'flex':'none';
+ document.getElementById('thumbs').style.display=a?'none':'flex';
+ document.getElementById('hintF').style.display=a?'none':'flex';
+ document.getElementById('panelbtn').classList.toggle('on',a);
+ document.querySelector('.w1').className=a?'w1 sel':'w1';
+ document.getElementById('scrim').style.display=s==='done'?'flex':'none';
+ document.getElementById('timerpill').style.display=s==='done'?'none':'flex';
+ document.getElementById('cap').textContent=caps[s];
+ fit();
+}
+function fit(){const d=document.getElementById('dev');const w=Math.min(1,(window.innerWidth-24)/1280);d.style.transform=`scale(${w})`;d.parentElement.style.height=(800*w+8)+'px';}
+document.querySelectorAll('#sw button').forEach(b=>b.onclick=()=>show(b.dataset.s));
+window.addEventListener('resize',fit);show('lib');
+</script>
+</body>
+</html>
